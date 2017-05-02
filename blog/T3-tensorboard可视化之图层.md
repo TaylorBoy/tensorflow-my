@@ -67,7 +67,7 @@ writer = tf.summary.FileWriter('graph/', sess.graph)
 ```
 </br>
 
-运行完整代码后「[完整代码] [url]」, 会自动生成图片信息并保存到 `graph` 目录中, 然后什么在 `graph` 上一级目录执行下面这条命令, 它会输出一条地址, 我们在浏览器上打开`http://127.0.1.6006:1`
+运行完整代码后「[完整代码] (#code)」, 会自动生成图片信息并保存到 `graph` 目录中, 然后什么在 `graph` 上一级目录执行下面这条命令, 它会输出一条地址, 我们在浏览器上打开`http://127.0.1.6006:1`
 ```
 Ubuntu ~#  tensorboard --logdir='./graph/'
 Starting TensorBoard b'41' on port 6006
@@ -75,10 +75,72 @@ Starting TensorBoard b'41' on port 6006
 ...
 ```
 这个网页有多个选项卡, 因为我们只定义了`sess.graph`, 所以我们切换到`GRAPH`, 可以看到我们的神经网络的基本结构
+![](https://github.com/TaylorBoy/tensorflow-my/blob/master/blog/images/tensorboard-1.png "t4-1")
 
+我们再点开`inputs`图层看看, 里面有`x_in`和`y_in`两个输入, 这两个名字是我们取的, 其他的可以自己看看啦
+![](https://github.com/TaylorBoy/tensorflow-my/blob/master/blog/images/tensorboard-2.png?raw=true "inputs")
 
 ***
 
 ### 完整代码
-[url]: http://taylor.easy.tensorflow.graph "code"
+<span id="code"></span>
+
+最后把输入输出图层也加上了名字, 看下完整代码
+```
+# !/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+import tensorflow as tf
+import numpy as np
+import matplotlib.pyplot as plt 
+
+
+# Define add layer function.
+def add_layer(inputs, in_size, out_size, activation_function=None):
+    # add one more layer and return the output of this layer
+    with tf.name_scope('layer'):
+        with tf.name_scope('weights'):
+            Weights = tf.Variable(tf.random_normal([in_size, out_size]))
+        with tf.name_scope('biases'):
+            biases = tf.Variable(tf.zeros([1, out_size]) + 0.1)
+        with tf.name_scope('wx_plus_b'):
+            Wx_plus_b = tf.add(tf.matmul(inputs, Weights), biases)
+        if activation_function is None:
+            outputs = Wx_plus_b
+        else:
+            outputs = activation_function(Wx_plus_b, )
+        return outputs
+
+# Define palceholder for inputs to network.
+# Use [with] including xs & ys:
+with tf.name_scope('inputs'):
+    xs = tf.placeholder(tf.float32, [None, 1], name='x_in') # Add name
+    ys = tf.placeholder(tf.float32, [None, 1], name='y_in')
+
+
+# Add hidden layer
+with tf.name_scope('hidden_layer'):
+    l1 = add_layer(xs, 1, 10, activation_function=tf.nn.relu)
+# Add output layer
+with tf.name_scope('output_layer'):
+    prediction = add_layer(l1, 10, 1, activation_function=None)
+
+# The error between prediction and real data
+with tf.name_scope('loss'):
+    loss = tf.reduce_mean(tf.reduce_sum(tf.square(ys-prediction),
+        reduction_indices=[1]))
+
+with tf.name_scope('train'):
+    train_setp = tf.train.GradientDescentOptimizer(0.1).minimize(loss)
+
+sess = tf.Session()
+# ** Add frame to file
+writer = tf.summary.FileWriter('./graph/', sess.graph)
+
+# Important step
+sess.run(tf.initialize_all_variables())
+
+```
+最后效果:
+![](https://github.com/TaylorBoy/tensorflow-my/blob/master/blog/images/tensorboard-3.png?raw=true "new")
  

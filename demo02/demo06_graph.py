@@ -30,9 +30,11 @@ with tf.name_scope('inputs'):
 
 
 # Add hidden layer
-l1 = add_layer(xs, 1, 10, activation_function=tf.nn.relu)
+with tf.name_scope('hidden_layer'):
+    l1 = add_layer(xs, 1, 10, activation_function=tf.nn.relu)
 # Add output layer
-prediction = add_layer(l1, 10, 1, activation_function=None)
+with tf.name_scope('output_layer'):
+    prediction = add_layer(l1, 10, 1, activation_function=None)
 
 # The error between prediction and real data
 with tf.name_scope('loss'):
