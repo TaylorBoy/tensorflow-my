@@ -13,13 +13,16 @@ def add_layer(inputs, in_size, out_size, n_layer, activation_function=None):
     with tf.name_scope('layer'):
         with tf.name_scope('weights'):
             Weights = tf.Variable(tf.random_normal([in_size, out_size]), name='W')
-            # Draw histogram: name, number
+            # Draw histogram: name, variable
             tf.summary.histogram(layer_name + '/weights', Weights)
+
         with tf.name_scope('biases'):
             biases = tf.Variable(tf.zeros([1, out_size]) + 0.1)
             tf.summary.histogram(layer_name + '/biases', biases)
+
         with tf.name_scope('wx_plus_b'):
             Wx_plus_b = tf.add(tf.matmul(inputs, Weights), biases)
+
         if activation_function is None:
             outputs = Wx_plus_b
         else:
@@ -42,9 +45,11 @@ y_data = np.square(x_data) - 0.5 + noise
 
 
 # Add hidden layer
-l1 = add_layer(xs, 1, 10, n_layer=1, activation_function=tf.nn.relu)
+with tf.name_scope('hidden_layer'):
+    l1 = add_layer(xs, 1, 10, n_layer=1, activation_function=tf.nn.relu)
 # Add output layer
-prediction = add_layer(l1, 10, 1, n_layer=2, activation_function=None)
+with tf.name_scope('output_layer'):
+    prediction = add_layer(l1, 10, 1, n_layer=2, activation_function=None)
 
 # The error between prediction and real data
 with tf.name_scope('loss'):

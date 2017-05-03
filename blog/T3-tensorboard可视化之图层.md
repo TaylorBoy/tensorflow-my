@@ -75,15 +75,15 @@ Starting TensorBoard b'41' on port 6006
 ...
 ```
 这个网页有多个选项卡, 因为我们只定义了`sess.graph`, 所以我们切换到`GRAPH`, 可以看到我们的神经网络的基本结构
-![](https://github.com/TaylorBoy/tensorflow-my/blob/master/blog/images/tensorboard-1.png "t4-1")
+![](https://raw.githubusercontent.com/TaylorBoy/tensorflow-my/master/blog/images/tensorboard-1.png "total")
 
 我们再点开`inputs`图层看看, 里面有`x_in`和`y_in`两个输入, 这两个名字是我们取的, 其他的可以自己看看啦
 ![](https://github.com/TaylorBoy/tensorflow-my/blob/master/blog/images/tensorboard-2.png?raw=true "inputs")
 
 ***
 
-### 完整代码
-<span id="code"></span>
+<h3 id="code">完整代码</h3>
+
 
 最后把输入输出图层也加上了名字, 看下完整代码
 ```
