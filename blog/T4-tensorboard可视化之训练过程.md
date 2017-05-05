@@ -12,6 +12,7 @@
 * 合并所有训练图
 * 在 tensorboard 中查看
 * 
+
 </br>
 
 ### 制作输入源
@@ -92,8 +93,10 @@ for i in range(1000):
 		# 记录训练数据
 		writer.add_summary(rs, i)
 ```
+</br>
 
 ### 运行程序, 浏览器查看
+</br>
 ```
 [Ubuntu16 ~]# python3 filename.py
 [Ubuntu16 ~]# tensorboard --logdir='graph'
@@ -101,13 +104,21 @@ Starting TensorBoard b'41' on port 6006
 (You can navigate to http://127.0.1.1:6006)
 ...
 ```
+</br>
+
 loss 图表在 SCALARS 选项卡下
-![]()
+![](https://github.com/TaylorBoy/tensorflow-my/blob/master/blog/images/tensorboard-4.png?raw=true "LOSS")
+</br>
+
 DISTRIBUTIONS & HISTOGRAMS 选项卡下都有 hidden_layer & output_layer, 但形式不一样
+
+</br>
 DISTRIBUTIONS
-![]()
+![](https://github.com/TaylorBoy/tensorflow-my/blob/master/blog/images/tensorboard-5.png?raw=true "distributions")
+</br>
+
 HISTOGRAMS
-![]()
+![](https://github.com/TaylorBoy/tensorflow-my/blob/master/blog/images/tensorboard-6.png?raw=true "histograms")
 </br>
 
 ***
